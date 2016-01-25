@@ -13,17 +13,22 @@ class Api extends REST_Controller
 
 	public function student_get()
 	{
-		$id = $this->uri->segment(3);
+		$student_id = $this->uri->segment(3);
 
-		$student = array(
-			1=> array('PrimeiroNome'=>'Ricardo','Sobrenome'=>'Amb'),
-			2=> array('PrimeiroNome'=>'Michelle','Sobrenome'=>'Mendes')
-		);
-		if(isset($student[$id])){
-			$this->response(array('status'=>'success','student'=>$student[$id]));
+		$this->load->model('Model_students');
+
+		$student = $this->Model_students->get_by(array('student_id'=>$student_id,'status'=>'active'));
+
+		if(isset($student['student_id'])){
+			$this->response(array('status'=>'success','student'=>$student));
 		}else{
 			$this->response(array('status'=>'error','message'=>'The specified student could not be found.'), REST_Controller::HTTP_NOT_FOUND);
 		}
+	}
+
+	public function student_put()
+	{
+		var_dump($this->put());
 	}
 
 }
