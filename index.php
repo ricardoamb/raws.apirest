@@ -23,7 +23,7 @@ switch (ENVIRONMENT)
 	default:
 		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
 		echo 'The application environment is not set correctly.';
-		exit(1); // EXIT_ERROR
+		exit(1);
 }
 	$system_path = 'src/sys';
 	$application_folder = 'src/app';
@@ -52,24 +52,11 @@ switch (ENVIRONMENT)
 		exit(3); // EXIT_CONFIG
 	}
 
-/*
- * -------------------------------------------------------------------
- *  Now that we know the path, set the main path constants
- * -------------------------------------------------------------------
- */
-	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
-
-	// Path to the system folder
 	define('BASEPATH', str_replace('\\', '/', $system_path));
-
-	// Path to the front controller (this file)
 	define('FCPATH', dirname(__FILE__).'/');
-
-	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
-	// The path to the "application" folder
 	if (is_dir($application_folder))
 	{
 		if (($_temp = realpath($application_folder)) !== FALSE)
@@ -90,8 +77,6 @@ switch (ENVIRONMENT)
 
 		define('APPPATH', BASEPATH.$application_folder.DIRECTORY_SEPARATOR);
 	}
-
-	// The path to the "views" folder
 	if ( ! is_dir($view_folder))
 	{
 		if ( ! empty($view_folder) && is_dir(APPPATH.$view_folder.DIRECTORY_SEPARATOR))
@@ -120,12 +105,4 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder);
-
-/*
- * --------------------------------------------------------------------
- * LOAD THE BOOTSTRAP FILE
- * --------------------------------------------------------------------
- *
- * And away we go...
- */
 require_once BASEPATH.'core/CodeIgniter.php';
